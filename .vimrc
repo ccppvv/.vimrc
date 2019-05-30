@@ -9,7 +9,7 @@ Plug 'Shougo/denite.nvim'
 Plug 'tkhren/vim-fake'
 Plug 'konfekt/fastfold'
 Plug 'rizzatti/dash.vim'
-""""È¢úËâ≤ÊòæÁ§∫, ÂØºËá¥gdÈîôËØØ ""
+""""causes gd not available ""
 "" Plug 'gorodinskiy/vim-coloresque'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'othree/yajs.vim'
@@ -145,7 +145,7 @@ Plug 'luochen1990/rainbow'
 let g:rainbow_active = 1
 let g:rainbow_conf = { 'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'], 'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'], 'operators': '_,_', 'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'], 'separately': { '*': {}, 'tex': { 'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'], }, 'lisp': { 'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'], }, 'vim': { 'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'], }, 'html': { 'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'], }, 'css': 0, } }
 Plug 'Yggdroot/indentLine'
-"ÂØºËá¥jsonÊñá‰ª∂ÂºïÂè∑‰∏¢Â§±, ÂèÇËÄÉ: https://github.com/Yggdroot/indentLine/issues/140ÊúÄ‰∏ã‰ΩúËÄÖÁöÑËß£ÂÜ≥ÊñπÊ°à
+"https://github.com/Yggdroot/indentLine/issues/140
 let g:indentLine_char = '‚îä'
 let g:indentLine_concealcursor='nc'
 let g:indentLine_conceallevel = 2
