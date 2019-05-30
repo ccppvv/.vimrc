@@ -9,16 +9,16 @@ Plug 'Shougo/denite.nvim'
 Plug 'tkhren/vim-fake'
 Plug 'konfekt/fastfold'
 Plug 'rizzatti/dash.vim'
-"""颜色显示, 导致gd错误 ""
-" Plug 'gorodinskiy/vim-coloresque'
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""È¢úËâ≤ÊòæÁ§∫, ÂØºËá¥gdÈîôËØØ ""
+"" Plug 'gorodinskiy/vim-coloresque'
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'othree/yajs.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 let g:jsx_ext_required = 1
 Plug 'maxmellon/vim-jsx-pretty'
 let g:vim_jsx_pretty_colorful_config = 1
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'ap/vim-buftabline'
 set hidden
 nnoremap <C-l> :bnext<CR>
@@ -39,7 +39,6 @@ Plug 'rking/ag.vim'
 nmap <space>gg :Ag<space>
 Plug 'jremmen/vim-ripgrep'
 nmap <space>rr :Rg<space>
-
 Plug 'Lokaltog/vim-easymotion'
 "" default trigger <leader><leader>
 nmap <space> <Plug>(easymotion-prefix)
@@ -53,9 +52,9 @@ function! s:config_fuzzyall(...) abort
   \   ],
   \ }), get(a:, 1, {}))
 endfunction
-"" noremap <silent><expr> <space>/ incsearch#go(<SID>config_fuzzyall())
-"" noremap <silent><expr> <space>? incsearch#go(<SID>config_fuzzyall({'command': '?'}))
-"" noremap <silent><expr> <space>g? incsearch#go(<SID>config_fuzzyall({'is_stay': 1}))
+noremap <silent><expr> <space>/ incsearch#go(<SID>config_fuzzyall())
+noremap <silent><expr> <space>? incsearch#go(<SID>config_fuzzyall({'command': '?'}))
+noremap <silent><expr> <space>g? incsearch#go(<SID>config_fuzzyall({'is_stay': 1}))
 """ EasyMotion
 "" let g:EasyMotion_do_mapping = 0
 "" let g:EasyMotion_smartcase = 1
@@ -63,14 +62,11 @@ endfunction
 "" let g:EasyMotion_use_upper = 1
 let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz;'
 nmap s <Plug>(easymotion-s)
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plug 'axiaoxin/vim-json-line-format'
-nmap <space>fj ,wj
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plug 'axiaoxin/vim-json-line-format'
+" nmap <space>fj ,wj
 Plug 'mattn/emmet-vim'
 imap <c-e> <c-y>,
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-scriptease'
 Plug 'tpope/vim-repeat'
@@ -78,6 +74,7 @@ Plug 'tpope/vim-surround' " gs ds
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary' "gc
 Plug 'airblade/vim-gitgutter'
+let g:gitgutter_max_signs=3000
 Plug 'junegunn/gv.vim'
 Plug 'tommcdo/vim-exchange' " cx
 Plug 'suy/vim-context-commentstring'
@@ -85,7 +82,7 @@ Plug 'suy/vim-context-commentstring'
 Plug 'kshenoy/vim-signature'
 Plug 'jiangmiao/auto-pairs'
 Plug 'psychollama/further.vim'
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'mhinz/vim-startify'
 highlight StartifyBracket ctermfg=240
 highlight StartifyFooter  ctermfg=240
@@ -96,17 +93,29 @@ highlight StartifySlash   ctermfg=240
 highlight StartifySpecial ctermfg=240
 autocmd User Startified setlocal cursorline
 set sessionoptions=blank,curdir,folds,help,tabpages,winpos
-if has('nvim')
-  autocmd TabNewEntered * Startify
-else
-  autocmd VimEnter * let t:startify_new_tab = 1
-  autocmd BufEnter *
-        \ if !exists('t:startify_new_tab') && empty(expand('%')) |
-        \   let t:startify_new_tab = 1 |
-        \   Startify |
-        \ endif
-endif
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" if has('nvim')
+"   autocmd TabNewEntered * Startify
+" else
+"   autocmd VimEnter * let t:startify_new_tab = 1
+"   autocmd BufEnter *
+"         \ if !exists('t:startify_new_tab') && empty(expand('%')) |
+"         \   let t:startify_new_tab = 1 |
+"         \   Startify |
+"         \ endif
+" endif
+autocmd VimEnter *
+            \   if !argc() || argc() == 1 && isdirectory(argv()[0])
+            \ |   Startify
+            \ |   NERDTree
+            \ |   wincmd w
+            \ | endif
+autocmd VimEnter * let t:startify_new_tab = 1
+autocmd BufEnter *
+      \ if !exists('t:startify_new_tab') && empty(expand('%')) |
+      \   let t:startify_new_tab = 1 |
+      \   Startify |
+      \ endif
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'Xuyuanp/nerdtree-git-plugin'
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "M",
@@ -124,94 +133,79 @@ Plug 'scrooloose/nerdtree'
 let NERDTreeRespectWildIgnore=1
 let g:NERDTreeWinSize=30
 set wildignore+=node_modules/*
-
 autocmd VimEnter * NERDTree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-autocmd VimEnter *
-            \   if !argc() || argc() == 1 && isdirectory(argv()[0])
-            \ |   Startify
-            \ |   NERDTree
-            \ |   wincmd w
-            \ | endif
-autocmd VimEnter * let t:startify_new_tab = 1
-autocmd BufEnter *
-      \ if !exists('t:startify_new_tab') && empty(expand('%')) |
-      \   let t:startify_new_tab = 1 |
-      \   Startify |
-      \ endif
 Plug 'vim-scripts/vim-jsbeautify'
 Plug 'vim-airline/vim-airline'
 set scrolljump=3        " Scroll 3 lines at a time at bottom/top
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'luochen1990/rainbow'
 let g:rainbow_active = 1
 let g:rainbow_conf = { 'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'], 'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'], 'operators': '_,_', 'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'], 'separately': { '*': {}, 'tex': { 'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'], }, 'lisp': { 'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'], }, 'vim': { 'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'], }, 'html': { 'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'], }, 'css': 0, } }
-" Plug 'Yggdroot/indentLine'
-" let g:indentLine_char = '¦'
-" let g:indentLine_concealcursor = 'inc'
-" let g:indentLine_conceallevel = 2
-Plug 'nathanaelkane/vim-indent-guides'
-let g:indent_guides_enable_on_vim_startup=1
-let g:indent_guides_start_level=1
-" let g:indent_guides_auto_colors = 0
-" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black   ctermbg=3
-" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=4
-" let g:indent_guides_color_change_percent = 10
-let g:indent_guides_guide_size=1
-let g:indent_guides_space_guides = 1
-" let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
+Plug 'Yggdroot/indentLine'
+"ÂØºËá¥jsonÊñá‰ª∂ÂºïÂè∑‰∏¢Â§±, ÂèÇËÄÉ: https://github.com/Yggdroot/indentLine/issues/140ÊúÄ‰∏ã‰ΩúËÄÖÁöÑËß£ÂÜ≥ÊñπÊ°à
+let g:indentLine_char = '‚îä'
+let g:indentLine_concealcursor='nc'
+let g:indentLine_conceallevel = 2
+let g:vim_json_syntax_conceal = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'ervandew/supertab'
-" Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
-" let g:ycm_min_num_of_chars_for_completion = 1
-" let g:ycm_min_num_identifier_candidate_chars = 0
-" let g:ycm_use_ultisnips_completer = 1
-" let g:ycm_complete_in_comments = 1
-" let g:ycm_complete_in_strings = 1
-" let g:ycm_collect_identifiers_from_comments_and_strings = 1
-" let g:ycm_seed_identifiers_with_syntax = 1
-" let g:ycm_collect_identifiers_from_tags_files = 1
-" let g:ycm_semantic_triggers =  {
-"   \   'css,less,sass,scss' : ['-', 're!:\s*']
-"   \ }
-" let g:ycm_warning_symbol = "--"
-" let g:ycm_error_symbol = ">>"
-" let g:airline#extensions#ycm#enabled = 0
-" let g:airline#extensions#ycm#error_symbol = g:ycm_error_symbol
-" let g:airline#extensions#ycm#warning_symbol = g:ycm_warning_symbol
+" if has('nvim')
+"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" else
+"   Plug 'Shougo/deoplete.nvim'
+"   Plug 'roxma/nvim-yarp'
+"   Plug 'roxma/vim-hug-neovim-rpc'
+" endif
+" let g:deoplete#enable_at_startup = 1
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+let g:ycm_min_num_of_chars_for_completion = 1
+let g:ycm_min_num_identifier_candidate_chars = 0
+let g:ycm_use_ultisnips_completer = 1
+let g:ycm_complete_in_comments = 1
+let g:ycm_complete_in_strings = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_semantic_triggers =  {
+  \   'css,less,sass,scss' : ['-', 're!:\s*']
+  \ }
+let g:ycm_warning_symbol = "--"
+let g:ycm_error_symbol = ">>"
+let g:airline#extensions#ycm#enabled = 0
+let g:airline#extensions#ycm#error_symbol = g:ycm_error_symbol
+let g:airline#extensions#ycm#warning_symbol = g:ycm_warning_symbol
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 let g:UltiSnipsSnippetsDir = '~/.vim/plugged/vim-snippets/UltiSnips'
 let g:UltiSnipsSnippetDirectories = ['UltiSnips']
 let g:UltiSnipsExpandTrigger="<space><space>"
 let g:UltiSnipsListSnippets="<c-tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-p>"
+let g:UltiSnipsJumpBackwardTrigger="<c-n>"
 let g:UltiSnipsEditSplit="vertical"
 Plug 'epilande/vim-es2015-snippets'
 Plug 'epilande/vim-react-snippets'
 Plug 'liuchengxu/space-vim-dark'
 Plug 'haishanh/night-owl.vim'
 Plug 'joshdick/onedark.vim'
-Plug 'ajh17/Spacegray.vim'
+" Plug 'ajh17/Spacegray.vim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'tyrannicaltoucan/vim-quantum'
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'prettier/vim-prettier', { 'tag': '0.2.6' }
 let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.graphql,*.md,*.vue PrettierAsync
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.graphql,*.md,*.vue Prettier
 let g:prettier#exec_cmd_async=1
-let g:prettier#config#print_width=100
-" let g:prettier#config#tabWidth=4
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+let g:prettier#config#print_width=120
+let g:prettier#config#tabWidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set splitright
 let g:prettier#config#use_tabs='false'
-let g:prettier#config#semi='true'
+let g:prettier#config#semi='none'
 let g:prettier#config#single_quote='true'
 let g:prettier#config#bracket_spacing='true'
 let g:prettier#config#jsx_bracket_same_line='false'
@@ -221,8 +215,7 @@ let g:prettier#config#parser='babylon'
 let g:prettier#config#config_precedence='prefer-file'
 let g:prettier#config#prose_wrap='preserve'
 let g:prettier#config#tab_width=4
-
-"let g:spacegray_use_italics = 1
+let g:spacegray_use_italics = 1
 call plug#end()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if (has("termguicolors"))
@@ -241,8 +234,8 @@ if has('gui_running')
   let g:quantum_italics=1
   let g:airline_theme='quantum'
   colorscheme solarized
-  colorscheme space-vim-dark
   colorscheme quantum
+  colorscheme space-vim-dark
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   set cursorcolumn cursorline
 else
@@ -251,8 +244,11 @@ else
   let g:quantum_black=1
   let g:quantum_italics=1
   let g:airline_theme='quantum'
-  colorscheme space-vim-dark
+  " colorscheme spacegray
+  colorscheme solarized
   colorscheme quantum
+  colorscheme space-vim-dark
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   set cursorcolumn cursorline
 endif
 
@@ -274,7 +270,7 @@ set smarttab
 set t_Co=256
 set langmenu=none
 """""""""""""""""""""""""""""""""""""fold"""""""""""""""""""""""""""""""""""
-set foldmethod=indent
+set foldmethod=manual
 set foldnestmax=10
 set nofoldenable
 set foldlevel=2
@@ -303,7 +299,7 @@ set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 " set guifont=Sauce\ Code\ Pro\ Medium\ Nerd\ Font\ Complete\ Mono:h16
 set guifont=Dank\ Mono\ Regular:h16
 " set guifont=Dank\ Mono\ Italic:h16
-set macligatures
+" set macligatures
 set statusline+=%F
 set ruler
 set laststatus=1
@@ -407,6 +403,6 @@ set concealcursor=ic
 
 syntax on
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" set listchars=eol:-,tab:>·,trail:~,extends:>,precedes:<,space:-
+" set listchars=eol:-,tab:>¬∑,trail:~,extends:>,precedes:<,space:-
 " set list
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
