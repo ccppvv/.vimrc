@@ -3,23 +3,28 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plug 'tmhedberg/matchit'
-Plug 'Shougo/denite.nvim'
-" Plug 'myusuf3/numbers.vim'
-Plug 'tkhren/vim-fake'
-Plug 'konfekt/fastfold'
+" Plug 'tmhedberg/matchit'
 Plug 'rizzatti/dash.vim'
-""""causes gd not available ""
-"" Plug 'gorodinskiy/vim-coloresque'
+""""颜色显示, 导致gd错误 ""
+" Plug 'gorodinskiy/vim-coloresque'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plug 'othree/yajs.vim'
+" Plug 'othree/yajs.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 let g:jsx_ext_required = 1
-Plug 'maxmellon/vim-jsx-pretty'
-let g:vim_jsx_pretty_colorful_config = 1
+" Plug 'maxmellon/vim-jsx-pretty'
+" let g:vim_jsx_pretty_colorful_config = 1
+Plug 'mattn/emmet-vim'
+imap <c-e> <c-y>,
+let g:user_emmet_settings = {
+  \  'javascript.jsx' : {
+    \      'extends' : 'jsx',
+    \  },
+  \}
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'ap/vim-buftabline'
+let g:buftabline_separators='|'
+let g:buftabline_indicators='true'
 set hidden
 nnoremap <C-l> :bnext<CR>
 nnoremap <C-h> :bprev<CR>
@@ -55,30 +60,21 @@ endfunction
 noremap <silent><expr> <space>/ incsearch#go(<SID>config_fuzzyall())
 noremap <silent><expr> <space>? incsearch#go(<SID>config_fuzzyall({'command': '?'}))
 noremap <silent><expr> <space>g? incsearch#go(<SID>config_fuzzyall({'is_stay': 1}))
-""" EasyMotion
-"" let g:EasyMotion_do_mapping = 0
-"" let g:EasyMotion_smartcase = 1
-"" let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
-"" let g:EasyMotion_use_upper = 1
 let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz;'
 nmap s <Plug>(easymotion-s)
-" Plug 'axiaoxin/vim-json-line-format'
-" nmap <space>fj ,wj
-Plug 'mattn/emmet-vim'
-imap <c-e> <c-y>,
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-scriptease'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround' " gs ds
-Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive' " k
 Plug 'tpope/vim-commentary' "gc
+Plug 'tpope/vim-abolish' "cr snake_case, camelCase, MixedCase, -case
 Plug 'airblade/vim-gitgutter'
 let g:gitgutter_max_signs=3000
 Plug 'junegunn/gv.vim'
 Plug 'tommcdo/vim-exchange' " cx
-Plug 'suy/vim-context-commentstring'
-" autocmd FileType javascript.jsx setlocal commentstring={/*\ %s\ */}
+" Plug 'suy/vim-context-commentstring'
 Plug 'kshenoy/vim-signature'
 Plug 'jiangmiao/auto-pairs'
 Plug 'psychollama/further.vim'
@@ -93,29 +89,42 @@ highlight StartifySlash   ctermfg=240
 highlight StartifySpecial ctermfg=240
 autocmd User Startified setlocal cursorline
 set sessionoptions=blank,curdir,folds,help,tabpages,winpos
-" if has('nvim')
-"   autocmd TabNewEntered * Startify
-" else
-"   autocmd VimEnter * let t:startify_new_tab = 1
-"   autocmd BufEnter *
-"         \ if !exists('t:startify_new_tab') && empty(expand('%')) |
-"         \   let t:startify_new_tab = 1 |
-"         \   Startify |
-"         \ endif
-" endif
 autocmd VimEnter *
-            \   if !argc() || argc() == 1 && isdirectory(argv()[0])
+            \   if !argc()
             \ |   Startify
-            \ |   NERDTree
             \ |   wincmd w
             \ | endif
-autocmd VimEnter * let t:startify_new_tab = 1
-autocmd BufEnter *
-      \ if !exists('t:startify_new_tab') && empty(expand('%')) |
-      \   let t:startify_new_tab = 1 |
-      \   Startify |
-      \ endif
+Plug 'leafgarland/typescript-vim'
+Plug 'w0rp/ale'
+let g:ale_linters = {'javascript': ['eslint'], 'css': ['csslint'], 'jsx': ['eslint'], 'tsx': ['eslint']}
+" let g:ale_linters = {'javascript': ['eslint'], 'css': ['csslint'], 'jsx': ['stylelint', 'eslint']}
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['prettier', 'eslint'],
+\   'css': ['prettier'],
+\   'less': ['prettier', 'eslint'],
+\   'scss': ['prettier', 'eslint'],
+\   'jsx': ['prettier', 'eslint'],
+\}
+
+let g:ale_keep_list_window_open = 1
+let g:ale_linter_aliases = {
+\'jsx': ['css', 'javascript'],
+\'tsx': ['css', 'javascript']
+\}
+let g:ale_fix_on_save = 1
+let g:ale_javascript_prettier_options = '--single-quote --trailing-comma none'
+let g:ale_sign_column_always = 1
+let g:ale_set_highlights = 0
+let g:ale_sign_error = '●'
+let g:ale_sign_warning = '.'
+let g:ale_statusline_format = ['? %d', '? %d', '? OK']
+let g:ale_echo_msg_error_str = '●'
+let g:ale_echo_msg_warning_str = '.'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_lint_on_enter = 0
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Plug 'roman/golden-ratio'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "M",
@@ -129,15 +138,16 @@ let g:NERDTreeIndicatorMapCustom = {
     \ 'Ignored'   : "I",
     \ "Unknown"   : "?"
     \ }
+let NERDTreeHijackNetrw = 1
 Plug 'scrooloose/nerdtree'
 let NERDTreeRespectWildIgnore=1
-let g:NERDTreeWinSize=30
+" let g:NERDTreeWinSize=30
 set wildignore+=node_modules/*
-autocmd VimEnter * NERDTree
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" autocmd VimEnter * NERDTree
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+" autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 Plug 'vim-scripts/vim-jsbeautify'
 Plug 'vim-airline/vim-airline'
 set scrolljump=3        " Scroll 3 lines at a time at bottom/top
@@ -145,21 +155,13 @@ Plug 'luochen1990/rainbow'
 let g:rainbow_active = 1
 let g:rainbow_conf = { 'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'], 'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'], 'operators': '_,_', 'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'], 'separately': { '*': {}, 'tex': { 'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'], }, 'lisp': { 'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'], }, 'vim': { 'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'], }, 'html': { 'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'], }, 'css': 0, } }
 Plug 'Yggdroot/indentLine'
-"https://github.com/Yggdroot/indentLine/issues/140
-let g:indentLine_char = '‚îä'
+"导致json文件引号丢失, 参考: https://github.com/Yggdroot/indentLine/issues/140最下作者的解决方案
+let g:indentLine_char = '┊'
 let g:indentLine_concealcursor='nc'
 let g:indentLine_conceallevel = 2
 let g:vim_json_syntax_conceal = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plug 'ervandew/supertab'
-" if has('nvim')
-"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" else
-"   Plug 'Shougo/deoplete.nvim'
-"   Plug 'roxma/nvim-yarp'
-"   Plug 'roxma/vim-hug-neovim-rpc'
-" endif
-" let g:deoplete#enable_at_startup = 1
+" Plug 'zxqfl/tabnine-vim'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_min_num_identifier_candidate_chars = 0
@@ -180,7 +182,7 @@ let g:airline#extensions#ycm#warning_symbol = g:ycm_warning_symbol
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 let g:UltiSnipsSnippetsDir = '~/.vim/plugged/vim-snippets/UltiSnips'
 let g:UltiSnipsSnippetDirectories = ['UltiSnips']
-let g:UltiSnipsExpandTrigger="<space><space>"
+let g:UltiSnipsExpandTrigger="<c-l>"
 let g:UltiSnipsListSnippets="<c-tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-p>"
 let g:UltiSnipsJumpBackwardTrigger="<c-n>"
@@ -190,32 +192,12 @@ Plug 'epilande/vim-react-snippets'
 Plug 'liuchengxu/space-vim-dark'
 Plug 'haishanh/night-owl.vim'
 Plug 'joshdick/onedark.vim'
-" Plug 'ajh17/Spacegray.vim'
+Plug 'ajh17/Spacegray.vim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'tyrannicaltoucan/vim-quantum'
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plug 'prettier/vim-prettier', { 'tag': '0.2.6' }
-let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.graphql,*.md,*.vue Prettier
-let g:prettier#exec_cmd_async=1
-let g:prettier#config#print_width=120
-let g:prettier#config#tabWidth=4
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
-set splitright
-let g:prettier#config#use_tabs='false'
-let g:prettier#config#semi='none'
-let g:prettier#config#single_quote='true'
-let g:prettier#config#bracket_spacing='true'
-let g:prettier#config#jsx_bracket_same_line='false'
-let g:prettier#config#arrow_parens='avoid'
-let g:prettier#config#trailing_comma='none'
-let g:prettier#config#parser='babylon'
-let g:prettier#config#config_precedence='prefer-file'
-let g:prettier#config#prose_wrap='preserve'
-let g:prettier#config#tab_width=4
-let g:spacegray_use_italics = 1
 call plug#end()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if (has("termguicolors"))
@@ -233,18 +215,24 @@ if has('gui_running')
   let g:quantum_black=1
   let g:quantum_italics=1
   let g:airline_theme='quantum'
-  colorscheme solarized
   colorscheme quantum
+  colorscheme solarized
   colorscheme space-vim-dark
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  " set guifont=Dank\ Mono\ Regular:h18
+  set guifont=Sauce\ Code\ Pro\ Medium\ Nerd\ Font\ Complete\ Mono:h16
   set cursorcolumn cursorline
 else
   " colorscheme Brogrammer
-  colorscheme solarized
+" set guifont=Source\ Code\ Pro:h13
+" set guifont=Sauce\ Code\ Pro\ Medium\ Nerd\ Font\ Complete\ Mono:h16
+  " set guifont=Dank\ Mono\ Regular:h16
+" set guifont=Dank\ Mono\ Italic:h18
+" set macligatures
   let g:quantum_black=1
   let g:quantum_italics=1
   let g:airline_theme='quantum'
-  " colorscheme spacegray
+  colorscheme spacegray
   colorscheme solarized
   colorscheme quantum
   colorscheme space-vim-dark
@@ -257,13 +245,13 @@ func! EatChar(pat)
     return (c =~ a:pat) ? '' : c
 endfunc
 syntax on
-" set cc=100
+set cc=120
 set guioptions-=r guioptions-=L
 "setting below will disable set cursorline
 " autocmd InsertLeave * se nocul
 " autocmd InsertEnter * se cul
 autocmd! bufwritepost ~/.vimrc source %
-" set guicursor=i:ver100
+" set guicursor=i:ver120
 set nocompatible
 set cmdheight=1
 set smarttab
@@ -295,11 +283,6 @@ set nowrap
 set gdefault
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
-" set guifont=Source\ Code\ Pro:h13
-" set guifont=Sauce\ Code\ Pro\ Medium\ Nerd\ Font\ Complete\ Mono:h16
-set guifont=Dank\ Mono\ Regular:h16
-" set guifont=Dank\ Mono\ Italic:h16
-" set macligatures
 set statusline+=%F
 set ruler
 set laststatus=1
@@ -307,6 +290,7 @@ set showcmd magic
 set nobackup noswapfile
 set formatoptions+=j   " Delete comment character when joining commented lines
 set completeopt=longest,menu
+au BufRead,BufNewFile *.ts   setfiletype typescript
 " if has("autocmd")
 "     au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
 "                 \| exe "normal g'\"" | endif
@@ -341,8 +325,6 @@ nnoremap <space>k <c-w>k
 nnoremap <space>l <c-w>l
 nmap ; :
 " nmap ;; za
-" nmap j jzz
-" nmap k kzz
 nmap <leader>a A
 nmap <leader>c :source ~/.vimrc<cr>
 nmap <leader>d D
@@ -403,6 +385,6 @@ set concealcursor=ic
 
 syntax on
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" set listchars=eol:-,tab:>¬∑,trail:~,extends:>,precedes:<,space:-
+" set listchars=eol:-,tab:>·,trail:~,extends:>,precedes:<,space:-
 " set list
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
